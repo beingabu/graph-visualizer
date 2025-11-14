@@ -33,7 +33,7 @@ jobs:
         run: npm ci
 
       - name: Build Angular app
-        run: npm run build -- --configuration production --base-href /ai-quiz-game/
+        run: npm run build -- --configuration production --base-href /graph-visualizer/
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -43,7 +43,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist/ai-quiz-game/browser'
+          path: './dist/graph-visualizer-app/browser'
 
   deploy:
     environment:
