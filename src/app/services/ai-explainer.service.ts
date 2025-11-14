@@ -51,6 +51,7 @@ export class AiExplainerService {
   private composePrompt(): string {
     return [
       'You are an AI assistant that explains maze generation and pathfinding runs.',
+      'Pay attention to the provided algorithm name and tailor the explanation to that algorithm.',
       'Return a strict JSON object with keys: whatAlgorithmDoes, whatHappenedThisRun, comparison.',
       'Each value should be 1-2 concise sentences tailored to the provided run details.',
       'No markdown, no code fences—just valid JSON.',
