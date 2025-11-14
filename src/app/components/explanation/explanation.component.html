@@ -1,0 +1,29 @@
+<div class="explanation" [class.loading]="loading">
+  <div class="header">
+    <span>AI Explanation</span>
+    <span class="badge" *ngIf="loading">Thinking…</span>
+  </div>
+
+  <ng-container *ngIf="explanation; else placeholder">
+    <div class="section fade-in">
+      <div class="section-title">What this algorithm does</div>
+      <p>{{ explanation.whatAlgorithmDoes }}</p>
+    </div>
+
+    <div class="section fade-in" style="animation-delay: 60ms">
+      <div class="section-title">What happened during this run</div>
+      <p>{{ explanation.whatHappenedThisRun }}</p>
+    </div>
+
+    <div class="section fade-in" style="animation-delay: 120ms">
+      <div class="section-title">Comparison vs other algorithms</div>
+      <p>{{ explanation.comparison }}</p>
+    </div>
+  </ng-container>
+
+  <ng-template #placeholder>
+    <p class="placeholder">
+      Run a pathfinding algorithm to get an explanation of how it behaved on this maze and how it compares to others.
+    </p>
+  </ng-template>
+</div>

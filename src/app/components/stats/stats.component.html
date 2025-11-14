@@ -1,0 +1,24 @@
+<div class="stats">
+  <div class="header">Run Stats</div>
+  <div class="grid" *ngIf="stats; else noStats">
+    <div>
+      <span class="label">Algorithm</span>
+      <span class="value">{{ algorithm || '—' }}</span>
+    </div>
+    <div>
+      <span class="label">Visited nodes</span>
+      <span class="value">{{ stats.visitedCount }}</span>
+    </div>
+    <div>
+      <span class="label">Path length</span>
+      <span class="value">{{ stats.pathLength }}</span>
+    </div>
+    <div>
+      <span class="label">Runtime</span>
+      <span class="value">{{ stats.runtimeMs | number: '1.0-0' }} ms</span>
+    </div>
+  </div>
+  <ng-template #noStats>
+    <div class="empty">Run an algorithm to see stats.</div>
+  </ng-template>
+</div>

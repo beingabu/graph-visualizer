@@ -1,0 +1,36 @@
+<div class="controls">
+  <div class="row">
+    <label>
+      <span>Maze</span>
+      <select [(ngModel)]="mazeType">
+        <option value="dfs-backtracking">Randomized DFS (Backtracking)</option>
+        <option value="prims">Randomized Prim's</option>
+        <option value="binary-tree">Binary Tree</option>
+      </select>
+    </label>
+
+    <label>
+      <span>Algorithm</span>
+      <select [(ngModel)]="algorithm">
+        <option value="bfs">BFS</option>
+        <option value="dijkstra">Dijkstra's</option>
+        <option value="astar">A* (Manhattan)</option>
+        <option value="dfs">DFS</option>
+      </select>
+    </label>
+  </div>
+
+  <div class="row">
+    <label class="speed-label">
+      <span>Speed</span>
+      <input type="range" min="5" max="200" [value]="speed" (input)="onSpeedChange($event)" />
+    </label>
+  </div>
+
+  <div class="buttons">
+    <button type="button" (click)="onGenerate()">Generate Maze</button>
+    <button type="button" (click)="onVisualize()">Visualize</button>
+    <button type="button" (click)="onClearGrid()">Clear Grid</button>
+    <button type="button" (click)="onClearPath()">Clear Path</button>
+  </div>
+</div>

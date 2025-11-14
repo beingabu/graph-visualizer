@@ -1,0 +1,141 @@
+/* Global styles */
+:root {
+  --primary: #3f51b5;
+  --primary-dark: #303f9f;
+  --accent: #ff4081;
+  --warn: #f44336;
+  --background: #121212;
+  --surface: #1e1e1e;
+  --on-surface: #e0e0e0;
+  --on-surface-muted: #9e9e9e;
+  --elevation-1: 0 2px 10px rgba(0, 0, 0, 0.2);
+  --elevation-2: 0 4px 20px rgba(0, 0, 0, 0.3);
+  --border-radius: 8px;
+  --spacing: 1rem;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background-color: var(--background);
+  color: var(--on-surface);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* App shell */
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+/* App header */
+.app-header {
+  background-color: var(--surface);
+  padding: var(--spacing);
+  box-shadow: var(--elevation-1);
+  z-index: 10;
+
+  .title-group {
+    max-width: 1400px;
+    margin: 0 auto;
+    text-align: center;
+
+    h1 {
+      font-size: 1.75rem;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+      color: #fff;
+    }
+
+    p {
+      color: var(--on-surface-muted);
+      margin: 0;
+    }
+  }
+}
+
+/* Main content */
+.app-main {
+  display: flex;
+  flex: 1;
+  padding: var(--spacing);
+  gap: var(--spacing);
+  max-width: 1600px;
+  margin: 0 auto;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Canvas pane */
+.canvas-pane {
+  flex: 2;
+  min-width: 0; /* Prevents flex item from overflowing container */
+  display: flex;
+  flex-direction: column;
+  background-color: var(--surface);
+  border-radius: var(--border-radius);
+  box-shadow: var(--elevation-1);
+  overflow: hidden;
+}
+
+/* Side pane */
+.side-pane {
+  flex: 1;
+  min-width: 300px;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing);
+}
+
+/* Responsive design */
+@media (max-width: 1024px) {
+  .app-main {
+    flex-direction: column;
+  }
+
+  .canvas-pane,
+  .side-pane {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--surface);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
