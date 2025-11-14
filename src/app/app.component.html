@@ -24,7 +24,10 @@
       ></app-controls>
       <app-stats [stats]="stats" [algorithm]="currentAlgorithm"></app-stats>
       <app-legend></app-legend>
-      <app-explanation></app-explanation>
+      <app-explanation
+        [loading]="explanationLoading"
+        [explanation]="explanation"
+      ></app-explanation>
     </section>
   </main>
 </div>
