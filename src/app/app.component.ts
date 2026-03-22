@@ -1,4 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { GridComponent } from './components/grid/grid.component';
 import { ControlsComponent } from './components/controls/controls.component';
@@ -8,24 +9,26 @@ import { ExplanationComponent } from './components/explanation/explanation.compo
 import { MazeType } from './services/maze-generator.service';
 import { PathAlgorithm, PathStats } from './services/pathfinding.service';
 import { AiExplainerService, ExplanationSections } from './services/ai-explainer.service';
+import { AudioService } from './services/audio.service';
 import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
+    CommonModule,
     RouterOutlet,
-    GridComponent, 
-    ControlsComponent, 
-    StatsComponent, 
-    LegendComponent, 
-    ExplanationComponent
+    GridComponent,
+    ControlsComponent,
+    StatsComponent,
+    LegendComponent,
+    ExplanationComponent,
   ],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
 })
 export class AppComponent {
-  title = 'Maze & Pathfinding Visualizer';
+  title = 'AlgoViz';
   @ViewChild(GridComponent) gridComponent?: GridComponent;
 
   stats: PathStats | null = null;
@@ -37,27 +40,43 @@ export class AppComponent {
   animationSpeed = this.mapSpeedToDelay(this.defaultSpeedSetting);
   explanation: ExplanationSections | null = null;
   explanationLoading = false;
+  audioEnabled = true;
   private aiSub?: Subscription;
 
-  constructor(private aiExplainer: AiExplainerService) {}
+  constructor(
+    private aiExplainer: AiExplainerService,
+    private audioService: AudioService,
+  ) {}
+
+  toggleAudio(): void {
+    this.audioEnabled = !this.audioEnabled;
+    this.audioService.enabled = this.audioEnabled;
+    if (this.audioEnabled) {
+      this.audioService.playButtonClick();
+    }
+  }
 
   handleGenerate(type: MazeType): void {
+    this.audioService.playButtonClick();
     this.gridComponent?.generateMaze(type);
     this.lastMazeType = type;
   }
 
   handleVisualize(algorithm: PathAlgorithm): void {
+    this.audioService.playButtonClick();
     this.currentAlgorithm = algorithm;
     this.gridComponent?.visualizePath(algorithm);
   }
 
   handleClearGrid(): void {
+    this.audioService.playButtonClick();
     this.gridComponent?.resetGrid();
     this.stats = null;
     this.resetExplanationState();
   }
 
   handleClearPath(): void {
+    this.audioService.playButtonClick();
     this.gridComponent?.clearPath();
   }
 

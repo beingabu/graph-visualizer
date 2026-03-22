@@ -1,36 +1,79 @@
-<div class="controls">
-  <div class="row">
-    <label>
-      <span>Maze</span>
-      <select [(ngModel)]="mazeType">
-        <option value="dfs-backtracking">Randomized DFS (Backtracking)</option>
-        <option value="prims">Randomized Prim's</option>
-        <option value="binary-tree">Binary Tree</option>
-      </select>
+<div class="controls-panel">
+  <div class="panel-header">
+    <svg class="panel-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="3"/>
+      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+    </svg>
+    <span>Controls</span>
+  </div>
+
+  <div class="control-group">
+    <label class="control-label">
+      <span class="label-text">Maze Algorithm</span>
+      <div class="select-wrapper">
+        <select [(ngModel)]="mazeType">
+          <option value="dfs-backtracking">Randomized DFS</option>
+          <option value="prims">Prim's Algorithm</option>
+          <option value="binary-tree">Binary Tree</option>
+        </select>
+        <svg class="select-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </div>
     </label>
 
-    <label>
-      <span>Algorithm</span>
-      <select [(ngModel)]="algorithm">
-        <option value="bfs">BFS</option>
-        <option value="dijkstra">Dijkstra's</option>
-        <option value="astar">A* (Manhattan)</option>
-        <option value="dfs">DFS</option>
-      </select>
+    <label class="control-label">
+      <span class="label-text">Path Algorithm</span>
+      <div class="select-wrapper">
+        <select [(ngModel)]="algorithm">
+          <option value="bfs">BFS (Breadth-First)</option>
+          <option value="dijkstra">Dijkstra's</option>
+          <option value="astar">A* (Manhattan)</option>
+          <option value="dfs">DFS (Depth-First)</option>
+        </select>
+        <svg class="select-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </div>
     </label>
   </div>
 
-  <div class="row">
-    <label class="speed-label">
-      <span>Speed</span>
-      <input type="range" min="5" max="200" [value]="speed" (input)="onSpeedChange($event)" />
-    </label>
+  <div class="speed-control">
+    <div class="speed-header">
+      <span class="label-text">Animation Speed</span>
+      <span class="speed-value">{{ speed }}</span>
+    </div>
+    <input type="range" min="5" max="200" [value]="speed" (input)="onSpeedChange($event)" />
+    <div class="speed-labels">
+      <span>Slow</span>
+      <span>Fast</span>
+    </div>
   </div>
 
-  <div class="buttons">
-    <button type="button" (click)="onGenerate()">Generate Maze</button>
-    <button type="button" (click)="onVisualize()">Visualize</button>
-    <button type="button" (click)="onClearGrid()">Clear Grid</button>
-    <button type="button" (click)="onClearPath()">Clear Path</button>
+  <div class="button-grid">
+    <button type="button" class="btn btn-primary" (click)="onGenerate()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+      </svg>
+      Generate Maze
+    </button>
+    <button type="button" class="btn btn-accent" (click)="onVisualize()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="5 3 19 12 5 21 5 3"/>
+      </svg>
+      Visualize
+    </button>
+    <button type="button" class="btn btn-ghost" (click)="onClearPath()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/><line x1="18" y1="9" x2="12" y2="15"/><line x1="12" y1="9" x2="18" y2="15"/>
+      </svg>
+      Clear Path
+    </button>
+    <button type="button" class="btn btn-ghost" (click)="onClearGrid()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+      </svg>
+      Clear All
+    </button>
   </div>
 </div>

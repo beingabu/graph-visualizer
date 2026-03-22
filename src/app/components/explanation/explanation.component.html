@@ -1,29 +1,55 @@
-<div class="explanation" [class.loading]="loading">
-  <div class="header">
-    <span>AI Explanation</span>
-    <span class="badge" *ngIf="loading">Thinking…</span>
+<div class="explanation-panel" [class.is-loading]="loading">
+  <div class="panel-header">
+    <div class="header-left">
+      <svg class="panel-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+      </svg>
+      <span>AI Explanation</span>
+    </div>
+    <span class="loading-badge" *ngIf="loading">
+      <span class="pulse-dot"></span>
+      Analyzing...
+    </span>
   </div>
 
   <ng-container *ngIf="explanation; else placeholder">
-    <div class="section fade-in">
-      <div class="section-title">What this algorithm does</div>
+    <div class="section slide-up">
+      <div class="section-header">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
+        <span>How It Works</span>
+      </div>
       <p>{{ explanation.whatAlgorithmDoes }}</p>
     </div>
 
-    <div class="section fade-in" style="animation-delay: 60ms">
-      <div class="section-title">What happened during this run</div>
+    <div class="section slide-up" style="animation-delay: 80ms">
+      <div class="section-header">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+        </svg>
+        <span>This Run</span>
+      </div>
       <p>{{ explanation.whatHappenedThisRun }}</p>
     </div>
 
-    <div class="section fade-in" style="animation-delay: 120ms">
-      <div class="section-title">Comparison vs other algorithms</div>
+    <div class="section slide-up" style="animation-delay: 160ms">
+      <div class="section-header">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+        </svg>
+        <span>Comparison</span>
+      </div>
       <p>{{ explanation.comparison }}</p>
     </div>
   </ng-container>
 
   <ng-template #placeholder>
-    <p class="placeholder">
-      Run a pathfinding algorithm to get an explanation of how it behaved on this maze and how it compares to others.
-    </p>
+    <div class="placeholder-state">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+      </svg>
+      <span>Run a pathfinding algorithm to get an AI-powered analysis of how it performed.</span>
+    </div>
   </ng-template>
 </div>

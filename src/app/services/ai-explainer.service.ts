@@ -30,7 +30,7 @@ interface GenericAiResponse {
 
 @Injectable({ providedIn: 'root' })
 export class AiExplainerService {
-  private readonly baseUrl = 'https://epic-backend-hkeeg5uc5-beingmartinbmcs-projects.vercel.app/api/generic';
+  private readonly baseUrl = 'https://epic-backend-f9tfcyn1d-beingmartinbmcs-projects.vercel.app/api/generic';
 
   constructor(private http: HttpClient) {}
 

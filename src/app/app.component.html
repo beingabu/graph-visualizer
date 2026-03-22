@@ -1,20 +1,58 @@
 <div class="app-shell">
   <header class="app-header">
-    <div class="title-group">
-      <h1>{{ title }}</h1>
-      <p>Interactive maze generation and pathfinding visualizer with AI explanations.</p>
+    <div class="header-inner">
+      <div class="brand">
+        <div class="logo-mark">
+          <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 4L4 16L12 16L12 24L20 24L20 16L28 16L28 28" stroke="url(#logoGrad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="4" cy="4" r="3" fill="#22d3ee"/>
+            <circle cx="28" cy="28" r="3" fill="#8b5cf6"/>
+            <defs>
+              <linearGradient id="logoGrad" x1="4" y1="4" x2="28" y2="28">
+                <stop stop-color="#22d3ee"/>
+                <stop offset="1" stop-color="#8b5cf6"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>AlgoViz</h1>
+          <p>Pathfinding & Maze Algorithm Visualizer</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <div class="audio-toggle" (click)="toggleAudio()" [class.muted]="!audioEnabled">
+          <svg *ngIf="audioEnabled" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+          </svg>
+          <svg *ngIf="!audioEnabled" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <line x1="23" y1="9" x2="17" y2="15"/>
+            <line x1="17" y1="9" x2="23" y2="15"/>
+          </svg>
+        </div>
+        <span class="version-badge">v2.0</span>
+      </div>
     </div>
   </header>
 
   <main class="app-main">
     <section class="canvas-pane">
-      <app-grid
-        [animationSpeed]="animationSpeed"
-        (statsChange)="handleStatsChange($event)"
-      ></app-grid>
+      <div class="canvas-header">
+        <span class="canvas-label">Grid Canvas</span>
+        <span class="canvas-hint">Shift+Click = Start &nbsp;|&nbsp; Alt+Click = End &nbsp;|&nbsp; Click+Drag = Walls</span>
+      </div>
+      <div class="canvas-wrapper">
+        <app-grid
+          [animationSpeed]="animationSpeed"
+          (statsChange)="handleStatsChange($event)"
+        ></app-grid>
+      </div>
     </section>
 
-    <section class="side-pane">
+    <aside class="side-pane">
       <app-controls
         (mazeGenerate)="handleGenerate($event)"
         (visualize)="handleVisualize($event)"
@@ -28,8 +66,6 @@
         [loading]="explanationLoading"
         [explanation]="explanation"
       ></app-explanation>
-    </section>
+    </aside>
   </main>
 </div>
-
-<router-outlet></router-outlet>

@@ -1,24 +1,35 @@
-<div class="stats">
-  <div class="header">Run Stats</div>
-  <div class="grid" *ngIf="stats; else noStats">
-    <div>
-      <span class="label">Algorithm</span>
-      <span class="value">{{ algorithm || '—' }}</span>
+<div class="stats-panel">
+  <div class="panel-header">
+    <svg class="panel-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+    </svg>
+    <span>Run Statistics</span>
+  </div>
+
+  <div class="stats-grid" *ngIf="stats; else noStats">
+    <div class="stat-card">
+      <span class="stat-label">Algorithm</span>
+      <span class="stat-value algo">{{ algorithm || '—' }}</span>
     </div>
-    <div>
-      <span class="label">Visited nodes</span>
-      <span class="value">{{ stats.visitedCount }}</span>
+    <div class="stat-card">
+      <span class="stat-label">Visited</span>
+      <span class="stat-value cyan">{{ stats.visitedCount }}</span>
     </div>
-    <div>
-      <span class="label">Path length</span>
-      <span class="value">{{ stats.pathLength }}</span>
+    <div class="stat-card">
+      <span class="stat-label">Path Length</span>
+      <span class="stat-value emerald">{{ stats.pathLength }}</span>
     </div>
-    <div>
-      <span class="label">Runtime</span>
-      <span class="value">{{ stats.runtimeMs | number: '1.0-0' }} ms</span>
+    <div class="stat-card">
+      <span class="stat-label">Runtime</span>
+      <span class="stat-value amber">{{ stats.runtimeMs | number: '1.1-1' }} ms</span>
     </div>
   </div>
   <ng-template #noStats>
-    <div class="empty">Run an algorithm to see stats.</div>
+    <div class="empty-state">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
+      <span>Run an algorithm to see stats</span>
+    </div>
   </ng-template>
 </div>

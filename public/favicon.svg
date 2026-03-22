@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a"/>
+      <stop offset="100%" style="stop-color:#1e293b"/>
+    </linearGradient>
+    <linearGradient id="path" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#06b6d4"/>
+      <stop offset="100%" style="stop-color:#8b5cf6"/>
+    </linearGradient>
+    <linearGradient id="glow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#22d3ee"/>
+      <stop offset="100%" style="stop-color:#a78bfa"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#bg)"/>
+  <!-- Grid lines -->
+  <g stroke="#334155" stroke-width="0.5" opacity="0.4">
+    <line x1="8" y1="8" x2="8" y2="56"/>
+    <line x1="16" y1="8" x2="16" y2="56"/>
+    <line x1="24" y1="8" x2="24" y2="56"/>
+    <line x1="32" y1="8" x2="32" y2="56"/>
+    <line x1="40" y1="8" x2="40" y2="56"/>
+    <line x1="48" y1="8" x2="48" y2="56"/>
+    <line x1="56" y1="8" x2="56" y2="56"/>
+    <line x1="8" y1="8" x2="56" y2="8"/>
+    <line x1="8" y1="16" x2="56" y2="16"/>
+    <line x1="8" y1="24" x2="56" y2="24"/>
+    <line x1="8" y1="32" x2="56" y2="32"/>
+    <line x1="8" y1="40" x2="56" y2="40"/>
+    <line x1="8" y1="48" x2="56" y2="48"/>
+    <line x1="8" y1="56" x2="56" y2="56"/>
+  </g>
+  <!-- Path trace -->
+  <polyline points="12,12 12,20 12,28 20,28 28,28 28,36 36,36 44,36 44,44 52,44 52,52" 
+            fill="none" stroke="url(#path)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Nodes -->
+  <circle cx="12" cy="12" r="4" fill="#22d3ee" opacity="0.9"/>
+  <circle cx="52" cy="52" r="4" fill="#a78bfa" opacity="0.9"/>
+  <!-- Visited hint dots -->
+  <circle cx="20" cy="12" r="1.5" fill="#06b6d4" opacity="0.3"/>
+  <circle cx="20" cy="20" r="1.5" fill="#06b6d4" opacity="0.3"/>
+  <circle cx="12" cy="36" r="1.5" fill="#06b6d4" opacity="0.3"/>
+  <circle cx="36" cy="28" r="1.5" fill="#06b6d4" opacity="0.3"/>
+  <circle cx="44" cy="28" r="1.5" fill="#06b6d4" opacity="0.3"/>
+  <circle cx="36" cy="44" r="1.5" fill="#06b6d4" opacity="0.3"/>
+</svg>

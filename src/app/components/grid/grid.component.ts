@@ -15,6 +15,7 @@ import { MazeGeneratorService, MazeStep, MazeType } from '../../services/maze-ge
 import { PathAlgorithm, PathResult, PathStep, PathfindingService } from '../../services/pathfinding.service';
 import { Cell } from '../../models/cell.model';
 import { AnimationService } from '../../services/animation.service';
+import { AudioService } from '../../services/audio.service';
 
 @Component({
   selector: 'app-grid',
@@ -38,7 +39,12 @@ export class GridComponent implements AfterViewInit, OnDestroy {
     return this._animationSpeed;
   }
 
-  @Output() statsChange = new EventEmitter<{ visitedCount: number; pathLength: number; runtimeMs: number; algorithm?: PathAlgorithm }>();
+  @Output() statsChange = new EventEmitter<{
+    visitedCount: number;
+    pathLength: number;
+    runtimeMs: number;
+    algorithm?: PathAlgorithm;
+  }>();
 
   grid!: GridModel;
   private ctx!: CanvasRenderingContext2D;
@@ -50,11 +56,24 @@ export class GridComponent implements AfterViewInit, OnDestroy {
 
   private animationSub?: Subscription;
   private statsSub?: Subscription;
+  private stepIndex = 0;
+
+  private readonly colors = {
+    wall: '#1e293b',
+    start: '#10b981',
+    end: '#f43f5e',
+    visited: 'rgba(99, 102, 241, 0.35)',
+    frontier: '#6366f1',
+    path: '#22d3ee',
+    empty: 'rgba(15, 23, 42, 0.4)',
+    grid: 'rgba(99, 102, 241, 0.06)',
+  };
 
   constructor(
     private mazeService: MazeGeneratorService,
     private pathService: PathfindingService,
     private animation: AnimationService,
+    private audio: AudioService,
   ) {
     this.grid = new GridModel({ rows: this.rows, cols: this.cols });
   }
@@ -79,6 +98,7 @@ export class GridComponent implements AfterViewInit, OnDestroy {
     } else {
       this.drawingWall = cell.type !== 'wall';
       this.toggleWall(row, col, this.drawingWall);
+      this.audio.playWallPlace();
     }
     this.drawGrid();
   }
@@ -101,6 +121,7 @@ export class GridComponent implements AfterViewInit, OnDestroy {
 
   generateMaze(type: MazeType): void {
     this.cancelCurrentAnimation();
+    this.audio.resetCounter();
     const steps: MazeStep[] = [];
     this.mazeService.generateMaze(this.grid, type).subscribe({
       next: (step) => steps.push(step),
@@ -115,6 +136,8 @@ export class GridComponent implements AfterViewInit, OnDestroy {
 
     this.cancelCurrentAnimation();
     this.grid.resetVisits();
+    this.audio.resetCounter();
+    this.stepIndex = 0;
 
     const steps: PathStep[] = [];
     const result: PathResult = this.pathService.run(this.grid, type, this.startCell, this.endCell);
@@ -145,39 +168,39 @@ export class GridComponent implements AfterViewInit, OnDestroy {
   }
 
   private playMazeSteps(steps: MazeStep[]): void {
-    if (!steps.length) {
-      return;
-    }
+    if (!steps.length) return;
 
     this.animationSub = this.animation.runSequence(steps).subscribe({
       next: (step) => {
         const cell = this.grid.cells[step.row][step.col];
-        if (cell === this.startCell || cell === this.endCell) {
-          return;
-        }
+        if (cell === this.startCell || cell === this.endCell) return;
         cell.type = step.makeWall ? 'wall' : 'empty';
+        this.audio.playMazeStep();
         this.drawGrid();
       },
       complete: () => {
-        if (!this.startCell) {
-          this.setStart(1, 1);
-        }
-        if (!this.endCell) {
-          this.setEnd(this.rows - 2, this.cols - 2);
-        }
+        if (!this.startCell) this.setStart(1, 1);
+        if (!this.endCell) this.setEnd(this.rows - 2, this.cols - 2);
+        this.audio.playMazeComplete();
         this.drawGrid();
       },
     });
   }
 
   private playPathSteps(steps: PathStep[]): void {
-    if (!steps.length) {
-      return;
-    }
+    if (!steps.length) return;
 
     this.animationSub = this.animation.runSequence(steps).subscribe({
       next: (step) => {
+        this.stepIndex++;
         this.applyPathStep(step);
+
+        if (step.path && step.path.length > 0) {
+          this.audio.playPathFound();
+        } else if (step.visited.length > 0 && this.stepIndex % 3 === 0) {
+          this.audio.playVisited();
+        }
+
         this.drawGrid();
       },
     });
@@ -239,7 +262,9 @@ export class GridComponent implements AfterViewInit, OnDestroy {
 
   private drawGrid(): void {
     if (!this.ctx) return;
-    this.ctx.clearRect(0, 0, this.cols * this.cellSize, this.rows * this.cellSize);
+    const w = this.cols * this.cellSize;
+    const h = this.rows * this.cellSize;
+    this.ctx.clearRect(0, 0, w, h);
 
     for (let r = 0; r < this.rows; r++) {
       for (let c = 0; c < this.cols; c++) {
@@ -249,19 +274,18 @@ export class GridComponent implements AfterViewInit, OnDestroy {
       }
     }
 
-    // draw grid lines subtle
-    this.ctx.strokeStyle = 'rgba(0,0,0,0.08)';
+    this.ctx.strokeStyle = this.colors.grid;
     this.ctx.lineWidth = 1;
     for (let r = 0; r <= this.rows; r++) {
       this.ctx.beginPath();
       this.ctx.moveTo(0, r * this.cellSize + 0.5);
-      this.ctx.lineTo(this.cols * this.cellSize, r * this.cellSize + 0.5);
+      this.ctx.lineTo(w, r * this.cellSize + 0.5);
       this.ctx.stroke();
     }
     for (let c = 0; c <= this.cols; c++) {
       this.ctx.beginPath();
       this.ctx.moveTo(c * this.cellSize + 0.5, 0);
-      this.ctx.lineTo(c * this.cellSize + 0.5, this.rows * this.cellSize);
+      this.ctx.lineTo(c * this.cellSize + 0.5, h);
       this.ctx.stroke();
     }
   }
@@ -269,8 +293,10 @@ export class GridComponent implements AfterViewInit, OnDestroy {
   private getCellFromEvent(event: MouseEvent): { row: number; col: number } {
     const canvas = this.canvasRef.nativeElement;
     const rect = canvas.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const x = (event.clientX - rect.left) * scaleX;
+    const y = (event.clientY - rect.top) * scaleY;
     const col = Math.floor(x / this.cellSize);
     const row = Math.floor(y / this.cellSize);
     return {
@@ -312,20 +338,20 @@ export class GridComponent implements AfterViewInit, OnDestroy {
   private getCellColor(cell: Cell): string {
     switch (cell.type) {
       case 'wall':
-        return '#000000';
+        return this.colors.wall;
       case 'start':
-        return '#16a34a';
+        return this.colors.start;
       case 'end':
-        return '#dc2626';
+        return this.colors.end;
       case 'visited':
-        return '#bfdbfe';
+        return this.colors.visited;
       case 'frontier':
-        return '#1d4ed8';
+        return this.colors.frontier;
       case 'path':
-        return '#facc15';
+        return this.colors.path;
       case 'empty':
       default:
-        return '#ffffff';
+        return this.colors.empty;
     }
   }
 }
